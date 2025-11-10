@@ -69,64 +69,65 @@
       </div>
     </div>
     <!-- 右侧表单 -->
-     <div>
-
-      
+     <div class="login-wrap">
+        <h3 class="title">欢迎回来</h3>
+        <p class="sub-title">输入您的账号和密码登录</p>
+        <el-form ref="loginForm" :model="loginForm" :rules="loginRules" class="login-form">
+          <h3 class="title">{{title}}</h3>
+          <el-form-item prop="username">
+            <el-input
+              v-model="loginForm.username"
+              type="text"
+              auto-complete="off"
+              placeholder="账号"
+            >
+              <svg-icon slot="prefix" icon-class="user" class="el-input__icon input-icon" />
+            </el-input>
+          </el-form-item>
+          <el-form-item prop="password">
+            <el-input
+              v-model="loginForm.password"
+              type="password"
+              auto-complete="off"
+              placeholder="密码"
+              @keyup.enter.native="handleLogin"
+            >
+              <svg-icon slot="prefix" icon-class="password" class="el-input__icon input-icon" />
+            </el-input>
+          </el-form-item>
+          <el-form-item prop="code" v-if="captchaEnabled">
+            <el-input
+              v-model="loginForm.code"
+              auto-complete="off"
+              placeholder="验证码"
+              style="width: 63%"
+              @keyup.enter.native="handleLogin"
+            >
+              <svg-icon slot="prefix" icon-class="validCode" class="el-input__icon input-icon" />
+            </el-input>
+            <div class="login-code">
+              <img :src="codeUrl" @click="getCode" class="login-code-img"/>
+            </div>
+          </el-form-item>
+          <el-checkbox v-model="loginForm.rememberMe" style="margin:0px 0px 25px 0px;">记住密码</el-checkbox>
+          <el-form-item style="width:100%;">
+            <el-button
+              :loading="loading"
+              size="medium"
+              type="primary"
+              style="width:100%;"
+              @click.native.prevent="handleLogin"
+            >
+              <span v-if="!loading">登 录</span>
+              <span v-else>登 录 中...</span>
+            </el-button>
+            <div style="float: right;" v-if="register">
+              <router-link class="link-type" :to="'/register'">立即注册</router-link>
+            </div>
+          </el-form-item>
+        </el-form>
      </div>
-    <el-form ref="loginForm" :model="loginForm" :rules="loginRules" class="login-form">
-      <h3 class="title">{{title}}</h3>
-      <el-form-item prop="username">
-        <el-input
-          v-model="loginForm.username"
-          type="text"
-          auto-complete="off"
-          placeholder="账号"
-        >
-          <svg-icon slot="prefix" icon-class="user" class="el-input__icon input-icon" />
-        </el-input>
-      </el-form-item>
-      <el-form-item prop="password">
-        <el-input
-          v-model="loginForm.password"
-          type="password"
-          auto-complete="off"
-          placeholder="密码"
-          @keyup.enter.native="handleLogin"
-        >
-          <svg-icon slot="prefix" icon-class="password" class="el-input__icon input-icon" />
-        </el-input>
-      </el-form-item>
-      <el-form-item prop="code" v-if="captchaEnabled">
-        <el-input
-          v-model="loginForm.code"
-          auto-complete="off"
-          placeholder="验证码"
-          style="width: 63%"
-          @keyup.enter.native="handleLogin"
-        >
-          <svg-icon slot="prefix" icon-class="validCode" class="el-input__icon input-icon" />
-        </el-input>
-        <div class="login-code">
-          <img :src="codeUrl" @click="getCode" class="login-code-img"/>
-        </div>
-      </el-form-item>
-      <el-checkbox v-model="loginForm.rememberMe" style="margin:0px 0px 25px 0px;">记住密码</el-checkbox>
-      <el-form-item style="width:100%;">
-        <el-button
-          :loading="loading"
-          size="medium"
-          type="primary"
-          style="width:100%;"
-          @click.native.prevent="handleLogin"
-        >
-          <span v-if="!loading">登 录</span>
-          <span v-else>登 录 中...</span>
-        </el-button>
-        <div style="float: right;" v-if="register">
-          <router-link class="link-type" :to="'/register'">立即注册</router-link>
-        </div>
-      </el-form-item>
-    </el-form>
+    
     <!--  底部  -->
     <div class="el-login-footer">
       <span>Copyright © 2018-2025 ruoyi.vip All Rights Reserved.</span>
@@ -281,6 +282,133 @@ $bg-mix-light-7: rgba($primary-light-7, 0.3);
     margin-left: 2px;
   }
 }
+.login-wrap {
+      // position: absolute;
+      // inset: 0;
+      // width: 440px;
+      // height: 610px;
+      // padding: 0 5px;
+      // margin: auto;
+      // overflow: hidden;
+      // background-size: cover;
+      // border-radius: 5px;
+      // opacity: 0;
+      // transform: translateX(30px);
+      // animation: slideInRight 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+
+      .form {
+        box-sizing: border-box;
+        height: 100%;
+        padding: 40px 0;
+        widows: 100%;
+
+        .title {
+          margin-left: -2px;
+          font-size: 34px;
+          font-weight: 600;
+          color: var(--art-text-gray-900) !important;
+        }
+
+        .sub-title {
+          margin-top: 10px;
+          font-size: 14px;
+          color: var(--art-text-gray-500) !important;
+        }
+
+        .input-wrap {
+          margin-top: 25px;
+
+          .input-label {
+            display: block;
+            padding-bottom: 8px;
+            font-size: 15px;
+            font-weight: 500;
+            color: var(--art-text-gray-800);
+          }
+        }
+
+        .account-select :deep(.el-select__wrapper),
+        .el-input,
+        .login-btn {
+          height: 40px !important;
+        }
+
+        .drag-verify {
+          position: relative;
+          width: 100%;
+          padding-bottom: 20px;
+          margin-top: 25px;
+
+          .drag-verify-content {
+            position: relative;
+            z-index: 2;
+            box-sizing: border-box;
+            width: 100%;
+            overflow: hidden;
+            user-select: none;
+            border: 1px solid transparent;
+            border-radius: 8px;
+            transition: all 0.3s;
+
+            &.error {
+              border-color: #ff4d4f;
+            }
+          }
+
+          .error-text {
+            position: absolute;
+            top: 0;
+            z-index: 1;
+            padding: 0 1px;
+            margin-top: 10px;
+            font-size: 13px;
+            color: #f56c6c;
+            transition: all 0.3s;
+
+            &.show-error-text {
+              transform: translateY(40px);
+            }
+          }
+        }
+
+        .forget-password {
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+          margin-top: 10px;
+          font-size: 14px;
+          color: var(--art-text-gray-500);
+
+          a {
+            color: var(--main-color);
+            text-decoration: none;
+          }
+        }
+
+        .login-btn {
+          width: 100%;
+          height: 40px !important;
+          color: #fff;
+          border: 0;
+        }
+
+        .back-btn {
+          width: 100%;
+          height: 40px !important;
+        }
+
+        .footer {
+          margin-top: 20px;
+          font-size: 14px;
+          color: var(--art-text-gray-800);
+
+          a {
+            color: var(--main-color);
+            text-decoration: none;
+          }
+        }
+      }
+    }
 .login-tip {
   font-size: 13px;
   text-align: center;
