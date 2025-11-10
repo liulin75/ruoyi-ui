@@ -10,6 +10,17 @@ import '@/assets/styles/arco-theme.scss'
 import '@/assets/styles/arco-reset.scss'
 import '@/assets/styles/arco-layout.scss'
 import '@/assets/styles/ruoyi.scss' // ruoyi css
+import '@/assets/styles/reset.scss'                         // 重置HTML样式
+import '@/assets/styles/app.scss'                           // 全局样式
+import '@/assets/styles/el-ui.scss'                         // 优化 Element 样式
+import '@/assets/styles/mobile.scss'                        // 移动端样式优化
+import '@/assets/styles/change.scss'                        // 主题切换过渡优化
+import '@/assets/styles/theme-animation.scss'               // 主题切换动画
+import '@/assets/styles/el-dark.scss'                       // Element 暗黑主题
+import '@/assets/styles/dark.scss'                          // 系统主题
+// import '@icons/system/iconfont.css'                 // 系统图标
+// import '@utils/sys/console.ts'                      // 控制台输出内容
+import "@/assets/styles/variables.scss"                     // 全局变量
 import App from './App'
 import store from './store'
 import router from './router'

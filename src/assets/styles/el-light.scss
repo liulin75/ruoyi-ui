@@ -1,0 +1,27 @@
+/* 引入 Element UI 默认变量 */
+@import "~element-ui/packages/theme-chalk/src/common/var.scss";
+
+/* 覆盖主题变量 */
+$--color-white: #ffffff;
+$--color-black: #000000;
+
+$--color-success: #13deb9;
+$--color-warning: #ffae1f;
+$--color-danger: #ff4d4f;
+$--color-error: #fa896b;
+
+/* 按钮样式 */
+$--button-hover-bg-color: mix($--color-primary, #fff, 90%);
+$--button-hover-border-color: $--color-primary;
+$--button-border-color: $--color-primary;
+$--button-text-color: $--color-primary;
+
+/* 弹窗 */
+$--msgbox-border-radius: 12px;
+
+/* Popover */
+$--popover-padding: 14px;
+$--popover-border-radius: 10px;
+
+/* 最后导入样式，生成主题 */
+@import "~element-ui/packages/theme-chalk/src/index";
