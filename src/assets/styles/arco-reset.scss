@@ -1,0 +1,56 @@
+// 🌈 全局基础风格重置（让 Element 看起来更像 Arco）
+
+body {
+  font-family: "Inter", "PingFang SC", "Helvetica Neue", Arial, sans-serif;
+  background-color: #f5f7fa;
+  color: #1d2129;
+  font-size: 14px;
+  line-height: 1.6;
+}
+
+.el-card {
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+  border: none;
+}
+
+.el-button {
+  border-radius: 8px;
+  font-weight: 500;
+  padding: 8px 18px;
+  transition: all 0.2s;
+  box-shadow: 0 1px 2px rgba(0,0,0,0.05);
+}
+
+.el-button:hover {
+  opacity: 0.9;
+}
+
+.el-input__inner {
+  border-radius: 6px;
+  height: 36px;
+  box-shadow: none !important;
+}
+
+.el-dialog {
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.1);
+}
+
+.el-table {
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+}
+
+.el-pagination {
+  padding: 12px 0;
+}
+
+.el-message {
+  border-radius: 8px;
+}
+* {
+  transition: all 0.2s ease-in-out;
+}

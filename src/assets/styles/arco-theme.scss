@@ -1,0 +1,22 @@
+// 🎨 Arco Design 主题色板
+$arco-color-primary: #165dff;
+$arco-color-success: #00b42a;
+$arco-color-warning: #ff7d00;
+$arco-color-danger: #f53f3f;
+$arco-color-info: #86909c;
+
+// 🌈 灰阶
+$arco-gray-1: #f7f8fa;
+$arco-gray-2: #f2f3f5;
+$arco-gray-3: #e5e6eb;
+$arco-gray-6: #86909c;
+$arco-gray-8: #1d2129;
+
+// 注入 Element CSS 变量（Vue 3 + Element Plus）
+:root {
+  --el-color-primary: #{$arco-color-primary};
+  --el-color-success: #{$arco-color-success};
+  --el-color-warning: #{$arco-color-warning};
+  --el-color-danger: #{$arco-color-danger};
+  --el-color-info: #{$arco-color-info};
+}

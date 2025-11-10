@@ -1,0 +1,32 @@
+// 🧱 Arco 风格页面布局样式
+
+.layout-container {
+  background-color: #f7f8fa;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.el-header {
+  background-color: #fff;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.08);
+}
+
+.el-main {
+  background-color: #fff;
+  margin: 16px;
+  padding: 24px;
+  border-radius: 12px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+}
+
+.el-aside {
+  background-color: #fff;
+  box-shadow: 2px 0 6px rgba(0,0,0,0.05);
+}
+
+.el-menu-item.is-active {
+  background-color: rgba(22,93,255,0.1) !important;
+  color: #165dff !important;
+  border-radius: 8px;
+}
