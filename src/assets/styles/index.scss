@@ -176,3 +176,30 @@ aside {
     margin-bottom: 10px;
   }
 }
+.el-input__inner {
+    align-items: center;
+    background-color: #fff;
+    background-image: none;
+    border-radius: 5px;
+    box-shadow: 0 0 0 1px #dcdfe6 inset;
+    cursor: text;
+    display: inline-flex;
+    flex-grow: 1;
+    justify-content: center;
+    padding: 1px 11px;
+    height: 40px !important;
+    line-height: 40px !important;
+    transform: translateZ(0);
+    transition: box-shadow .2s cubic-bezier(.645, .045, .355, 1);
+}
+.el-input--medium .el-input__icon{
+  line-height: 40px !important;
+}
+.el-input__prefix{
+  left: 10px;
+}
+.el-button--primary{
+  color: rgb(255, 255, 255);
+  border: 0px;
+  height: 40px !important;
+}

@@ -2,9 +2,10 @@ import Vue from 'vue'
 
 import Cookies from 'js-cookie'
 
-import Element from 'element-ui'
-import './assets/styles/element-variables.scss'
-
+// import Element from 'element-ui'
+// import Element from 'element-ui/lib/element-ui.common.js'
+import Element from 'element-ui/lib/element-ui.common.js'  // 👈 不会自动引入CSS
+import '@/assets/styles/element-variables.scss'
 import '@/assets/styles/index.scss' // global css
 import '@/assets/styles/arco-theme.scss'
 import '@/assets/styles/arco-reset.scss'
