@@ -31,6 +31,13 @@ import Layout from '@/layout'
 // 公共路由
 export const constantRoutes = [
   {
+    path: '/exam',
+    component: Layout,
+    permissions: [],
+    children: [
+    ]
+  },
+  {
     path: '/redirect',
     component: Layout,
     hidden: true,
@@ -119,6 +126,13 @@ export const constantRoutes = [
 
 // 动态路由，基于用户权限动态去加载
 export const dynamicRoutes = [
+  {
+    path: '/exam',
+    component: Layout,
+    permissions: [],
+    children: [
+    ]
+  },
   {
     path: '/system/user-auth',
     component: Layout,

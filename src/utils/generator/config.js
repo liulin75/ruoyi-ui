@@ -19,7 +19,7 @@ export const inputComponents = [
     placeholder: '请输入',
     defaultValue: undefined,
     span: 24,
-    labelWidth: null,
+    labelWidth: 100,
     style: { width: '100%' },
     clearable: true,
     prepend: '',
