@@ -31,13 +31,6 @@ import Layout from '@/layout'
 // 公共路由
 export const constantRoutes = [
   {
-    path: '/exam',
-    component: Layout,
-    permissions: [],
-    children: [
-    ]
-  },
-  {
     path: '/redirect',
     component: Layout,
     hidden: true,
@@ -78,7 +71,14 @@ export const constantRoutes = [
         component: () => import('@/views/index'),
         name: 'Index',
         meta: { title: '首页', icon: 'dashboard', affix: true }
-      }
+      },
+      {
+        path: '/exam',
+        component: () => import('@/views/exam.vue'),
+        name: 'Exam',
+        meta: { title: '去考试', icon: 'dashboard', affix: true }
+        
+      },
     ]
   },
   // ✅ 新增页面开始
