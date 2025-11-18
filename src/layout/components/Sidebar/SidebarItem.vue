@@ -1,5 +1,5 @@
 <template>
-  <!-- <div v-if="!item.hidden">
+  <div v-if="!item.hidden">
     <template v-if="hasOneShowingChild(item.children,item) && (!onlyOneChild.children||onlyOneChild.noShowingChildren)&&!item.alwaysShow">
       <app-link v-if="onlyOneChild.meta" :to="resolvePath(onlyOneChild.path, onlyOneChild.query)">
         <el-menu-item :index="resolvePath(onlyOneChild.path)" :class="{'submenu-title-noDropdown':!isNest}">
@@ -21,15 +21,6 @@
         class="nest-menu"
       />
     </el-submenu>
-  </div>-->
-  <div>
-    <template>
-      <app-link :to="item.path">
-        <el-menu-item :index="item.path" style="color:#000; height: 40px;line-height: 40px;">
-          <item :img="item.img" :title="item.title" />
-        </el-menu-item>
-      </app-link>
-    </template>
   </div>
 </template>
 

@@ -33,7 +33,41 @@ const permission = {
     GenerateRoutes({ commit }) {
       return new Promise(resolve => {
         // 向后端请求路由数据
-        getRouters().then(res => {
+        // getRouters().then(res => {
+          const res = {
+              "msg": "操作成功",
+              "code": 200,
+              "data": [
+                  {
+                      "name": "System",
+                      "path": "/system",
+                      "hidden": false,
+                      "redirect": "noRedirect",
+                      "component": "Layout",
+                      "alwaysShow": true,
+                      "meta": {
+                          "title": "系统管理",
+                          "icon": "system",
+                          "noCache": false,
+                          "link": null
+                      },
+                      "children": [
+                          {
+                              "name": "User",
+                              "path": "user",
+                              "hidden": false,
+                              "component": "system/user/index",
+                              "meta": {
+                                  "title": "用户管理",
+                                  "icon": "user",
+                                  "noCache": false,
+                                  "link": null
+                              }
+                          },
+                      ]
+                  },
+              ]
+          }
           const sdata = JSON.parse(JSON.stringify(res.data))
           const rdata = JSON.parse(JSON.stringify(res.data))
           const sidebarRoutes = filterAsyncRouter(sdata)
@@ -46,7 +80,7 @@ const permission = {
           commit('SET_DEFAULT_ROUTES', sidebarRoutes)
           commit('SET_TOPBAR_ROUTES', sidebarRoutes)
           resolve(rewriteRoutes)
-        })
+        // })
       })
     }
   }

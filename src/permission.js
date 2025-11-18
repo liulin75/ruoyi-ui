@@ -48,13 +48,34 @@ router.beforeEach((to, from, next) => {
       }
     }
   } else {
-    // 没有token
-    if (isWhiteList(to.path)) {
-      // 在免登录白名单，直接进入
-      next()
-    } else {
-      next(`/login?redirect=${encodeURIComponent(to.fullPath)}`) // 否则全部重定向到登录页
-      NProgress.done()
+    // // 没有token
+    // if (isWhiteList(to.path)) {
+    //   debugger
+    //   store.dispatch('GenerateRoutes').then(accessRoutes => {
+    //         // 根据roles权限生成可访问的路由表
+    //         router.addRoutes(accessRoutes) // 动态添加可访问路由表
+    //         next({ ...to, replace: true }) // hack方法 确保addRoutes已完成
+    //       })
+    //   // 在免登录白名单，直接进入
+    //   // next()
+    // } else {
+    //   next(`/login?redirect=${encodeURIComponent(to.fullPath)}`) // 否则全部重定向到登录页
+    //   NProgress.done()
+    // }
+
+   if (isWhiteList(to.path)) {
+      if (!store.getters.sidebarRouters || store.getters.sidebarRouters.length === 0) {
+        store.dispatch('GenerateRoutes').then(accessRoutes => {
+          router.addRoutes(accessRoutes)
+          // 不要 next({ ...to })，直接 next() 放行
+          next()
+          NProgress.done()
+        })
+      } else {
+        next()
+        NProgress.done()
+      }
+      return
     }
   }
 })
