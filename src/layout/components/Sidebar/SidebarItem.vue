@@ -25,7 +25,7 @@
   <div>
     <template>
       <app-link :to="item.path">
-        <el-menu-item :index="item.path" style="height: 40px;line-height: 40px;">
+        <el-menu-item :index="item.path" style="color:#000; height: 40px;line-height: 40px;">
           <item :img="item.img" :title="item.title" />
         </el-menu-item>
       </app-link>
