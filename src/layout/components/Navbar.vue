@@ -6,7 +6,7 @@
     <top-nav v-if="topNav" id="topmenu-container" class="topmenu-container" />
 
     <div class="right-menu">
-      <template v-if="device!=='mobile'">
+      <!-- <template v-if="device!=='mobile'">
         <search id="header-search" class="right-menu-item" />
 
         <el-tooltip content="源码地址" effect="dark" placement="bottom">
@@ -23,7 +23,7 @@
           <size-select id="size-select" class="right-menu-item hover-effect" />
         </el-tooltip>
 
-      </template>
+      </template> -->
 
       <el-dropdown class="avatar-container right-menu-item hover-effect" trigger="hover">
         <div class="avatar-wrapper">
@@ -114,9 +114,9 @@ export default {
   height: 50px;
   overflow: hidden;
   position: relative;
-  background: #fff;
-  box-shadow: 0 1px 4px rgba(0,21,41,.08);
-
+  background: #fafbfc;
+  // box-shadow: 0 1px 4px rgba(0,21,41,.08);
+  padding-left: 10px;
   .hamburger-container {
     line-height: 46px;
     height: 100%;
@@ -124,7 +124,7 @@ export default {
     cursor: pointer;
     transition: background .3s;
     -webkit-tap-highlight-color:transparent;
-
+    color: #7987a1;
     &:hover {
       background: rgba(0, 0, 0, .025)
     }

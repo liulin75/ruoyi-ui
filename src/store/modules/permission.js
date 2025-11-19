@@ -54,7 +54,43 @@ const permission = {
                       "children": [
                           {
                               "name": "User",
-                              "path": "user",
+                              "path": "index",
+                              "hidden": false,
+                              "component": "system/user/index",
+                              "meta": {
+                                  "title": "用户管理",
+                                  "icon": "user",
+                                  "noCache": false,
+                                  "link": null
+                              }
+                          },
+                          {
+                              "name": "User",
+                              "path": "index1",
+                              "hidden": false,
+                              "component": "system/user/index",
+                              "meta": {
+                                  "title": "用户管理",
+                                  "icon": "document",
+                                  "noCache": false,
+                                  "link": null
+                              }
+                          },
+                          {
+                              "name": "User",
+                              "path": "index2",
+                              "hidden": false,
+                              "component": "system/user/index",
+                              "meta": {
+                                  "title": "用户管理",
+                                  "icon": "user",
+                                  "noCache": false,
+                                  "link": null
+                              }
+                          },
+                          {
+                              "name": "User",
+                              "path": "index3",
                               "hidden": false,
                               "component": "system/user/index",
                               "meta": {

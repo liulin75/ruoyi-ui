@@ -14,6 +14,7 @@
         @contextmenu.prevent.native="openMenu(tag,$event)"
       >
         <svg-icon v-if="tagsIcon && tag.meta && tag.meta.icon && tag.meta.icon !== '#'" :icon-class="tag.meta.icon" />
+        <i class="el-icon-notebook-2"></i>
         {{ tag.title }}
         <span v-if="!isAffix(tag)" class="el-icon-close" @click.prevent.stop="closeSelectedTag(tag)" />
       </router-link>
@@ -239,25 +240,29 @@ export default {
 
 <style lang="scss" scoped>
 .tags-view-container {
-  height: 34px;
   width: 100%;
-  background: #fff;
-  border-bottom: 1px solid #d8dce5;
-  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, .12), 0 0 3px 0 rgba(0, 0, 0, .04);
+  background: #fafbfc;
+  // border-bottom: 1px solid #d8dce5;
+  // box-shadow: 0 1px 3px 0 rgba(0, 0, 0, .12), 0 0 3px 0 rgba(0, 0, 0, .04);
+  padding-left: 10px;
+  justify-content: space-between;
+  display: flex;
   .tags-view-wrapper {
     .tags-view-item {
       display: inline-block;
       position: relative;
       cursor: pointer;
-      height: 26px;
-      line-height: 26px;
-      border: 1px solid #d8dce5;
-      color: #495060;
+      height: 32px;
+      line-height: 32px;
+      color: #7987a1;
       background: #fff;
-      padding: 0 8px;
       font-size: 12px;
       margin-left: 5px;
       margin-top: 4px;
+      border: 1px solid #00000014 !important;
+      box-shadow: none !important;
+      padding: 0px 10px;
+      border-radius: 5px !important;
       &:first-of-type {
         margin-left: 15px;
       }
@@ -265,9 +270,8 @@ export default {
         margin-right: 15px;
       }
       &.active {
-        background-color: #42b983;
-        color: #fff;
-        border-color: #42b983;
+        background-color: #fff !important;
+        color: #5D87FF !important;
         &::before {
           content: '';
           background: #fff;
@@ -279,9 +283,16 @@ export default {
           margin-right: 2px;
         }
       }
+      &:hover {
+        background-color: #fff !important;
+        color: #5D87FF !important;
+      }
     }
   }
-
+  .tags-view-container .tags-view-wrapper .tags-view-item.active{
+    color: #5D87FF;
+    background-color: #fff;
+  }
   .tags-view-item.active.has-icon::before {
     content: none !important;
   }
