@@ -43,12 +43,15 @@ const user = {
   actions: {
     // 登录
     Login({ commit }, userInfo) {
-      const username = userInfo.username.trim()
-      const password = userInfo.password
-      const code = userInfo.code
-      const uuid = userInfo.uuid
+      const loginName = userInfo.loginName.trim()
+      const provinceCode = userInfo.provinceCode
+      const cityCode = userInfo.cityCode
+      const countyCode = userInfo.countyCode
+      // const password = userInfo.password
+      // const code = userInfo.code
+      // const uuid = userInfo.uuid
       return new Promise((resolve, reject) => {
-        login(username, password, code, uuid).then(res => {
+        login(loginName, provinceCode,cityCode, countyCode).then(res => {
           setToken(res.token)
           commit('SET_TOKEN', res.token)
           resolve()

@@ -6,7 +6,7 @@ import errorCode from '@/utils/errorCode'
 import { tansParams, blobValidate } from "@/utils/ruoyi"
 import cache from '@/plugins/cache'
 import { saveAs } from 'file-saver'
-import { buildInfo, generateSignature } from "@/utils/signature";
+import { aesEncryptCTRJava, aesEncryptCTR } from "@/utils/signature";
 import { v4 as uuidv4 } from 'uuid';
 
 let downloadLoadingInstance
@@ -73,10 +73,17 @@ service.interceptors.request.use(config => {
   // 判断是否是需要签名的接口
   // if (config.url.startsWith("/school/")) {
   if (config.url) {
+    // 应用系统分配 `app_code`（应用编码）和 `app_secret`（应用密钥）。
 
+    // 请求头需传递：`app_code`、`request_uuid`、`request_time`、`request_signature`。
+
+    // - **app_code**: 应用编码，系统分配 （测试按照test传送）
+    // - **request_uuid**: 请求UUID，32字节十六进制字符串
+    // - **request_time**: 请求时间，毫秒时间戳
+    // - **request_signature**: 请求数据摘要（十六进制字符串），生成方法参考附录"签名工具"，文件流不参与计算
     const appCode = "test_app"; // 与后端保持一致
-    const appSecret = "后端给的 APP_SECRET";
-    const requestUuid = uuidv4().replace(/-/g, "");
+    const appSecret = window.configs.APP_SECRET;
+    const requestUuid = '1234567890abcdef';
     const requestTime = Date.now().toString();
     const requestRegion = "cn-hangzhou";
     const uri = config.url;
@@ -85,28 +92,43 @@ service.interceptors.request.use(config => {
     const originalJson = JSON.stringify(config.data || {});
 
     // 构造 info
-    const info = buildInfo(originalJson);
+    console.log('originalJsonoriginalJsonoriginalJsonoriginalJson',originalJson)
+    const info = aesEncryptCTRJava(originalJson);
+
+
+   
+   
+
 
     // 替换请求体，只发 info
     config.data = { info };
-
     // 生成 signature（注意使用原始 Json）
-    const signature = generateSignature(
-      appCode,
-      appSecret,
-      requestUuid,
-      requestTime,
-      requestRegion,
+    console.log('config.data',config.data)
+    console.log(appCode,  appSecret, requestUuid, requestTime, requestRegion,
       originalJson,
-      uri,
+      uri,)
+
+      let aaa = appCode + appSecret + requestUuid + '1763647878907' + requestRegion + originalJson + uri;
+
+    const signature = aesEncryptCTR(
+aaa
     );
 
+      //     appCode,
+      // appSecret,
+      // requestUuid,
+      // requestTime,
+      // requestRegion,
+      // originalJson,
+      // uri,
+      // 'SHA-256'
+
     // 设置请求头
-    config.headers["x-app-code"] = appCode;
-    config.headers["x-request-uuid"] = requestUuid;
-    config.headers["x-request-time"] = requestTime;
-    config.headers["x-request-signature"] = signature;
-    config.headers["x-request-region"] = requestRegion;
+    config.headers["app_code"] = appCode;
+    config.headers["request_uuid"] = requestUuid;
+    config.headers["request_time"] = requestTime;
+    config.headers["request_signature"] = signature;
+    config.headers["request_region"] = requestRegion;
   }
   // ===================== 生成签名 END =====================
 

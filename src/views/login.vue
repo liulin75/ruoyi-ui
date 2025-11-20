@@ -73,9 +73,9 @@
         <el-form ref="loginForm" :model="loginForm" :rules="loginRules" class="form">
           <h3 class="title1">欢迎回来</h3>
           <p class="sub-title">输入您的账号和密码登录</p>
-          <el-form-item prop="username">
+          <el-form-item prop="loginName">
             <el-input
-              v-model="loginForm.username"
+              v-model="loginForm.loginName"
               type="text"
               auto-complete="off"
               placeholder="账号"
@@ -83,7 +83,7 @@
               <svg-icon slot="prefix" icon-class="user" class="el-input__icon input-icon" />
             </el-input>
           </el-form-item>
-          <el-form-item prop="password">
+          <!-- <el-form-item prop="password">
             <el-input
               v-model="loginForm.password"
               type="password"
@@ -93,8 +93,39 @@
             >
               <svg-icon slot="prefix" icon-class="password" class="el-input__icon input-icon" />
             </el-input>
+          </el-form-item> -->
+          
+          <el-form-item prop="provinceCode">
+            <el-input
+              v-model="loginForm.provinceCode"
+              type="text"
+              auto-complete="off"
+              placeholder="省份"
+            >
+              <svg-icon slot="prefix" icon-class="password" class="el-input__icon input-icon" />
+            </el-input>
           </el-form-item>
-          <el-form-item prop="code" v-if="captchaEnabled">
+          <el-form-item prop="cityCode">
+            <el-input
+              v-model="loginForm.cityCode"
+              type="text"
+              auto-complete="off"
+              placeholder="地市"
+            >
+              <svg-icon slot="prefix" icon-class="password" class="el-input__icon input-icon" />
+            </el-input>
+          </el-form-item>
+          <el-form-item prop="countyCode">
+            <el-input
+              v-model="loginForm.countyCode"
+              type="text"
+              auto-complete="off"
+              placeholder="区县"
+            >
+              <svg-icon slot="prefix" icon-class="password" class="el-input__icon input-icon" />
+            </el-input>
+          </el-form-item>
+          <!-- <el-form-item prop="code" v-if="captchaEnabled">
             <el-input
               v-model="loginForm.code"
               auto-complete="off"
@@ -107,7 +138,7 @@
             <div class="login-code">
               <img :src="codeUrl" @click="getCode" class="login-code-img"/>
             </div>
-          </el-form-item>
+          </el-form-item> -->
           <el-checkbox v-model="loginForm.rememberMe" style="margin:0px 0px 25px 0px;">记住密码</el-checkbox>
           <el-form-item style="width:100%;">
             <el-button
@@ -146,14 +177,17 @@ export default {
       title: process.env.VUE_APP_TITLE,
       codeUrl: "",
       loginForm: {
-        username: "admin",
-        password: "admin123",
+        // password: "admin123",
+        provinceCode:'11',
+        cityCode:'101',
+        countyCode:'1001',
+        loginName:'test',
         rememberMe: false,
         code: "",
         uuid: ""
       },
       loginRules: {
-        username: [
+        loginName: [
           { required: true, trigger: "blur", message: "请输入您的账号" }
         ],
         password: [
@@ -178,7 +212,7 @@ export default {
     }
   },
   created() {
-    this.getCode()
+    // this.getCode()
     this.getCookie()
   },
   methods: {
@@ -192,11 +226,11 @@ export default {
       })
     },
     getCookie() {
-      const username = Cookies.get("username")
+      const loginName = Cookies.get("loginName")
       const password = Cookies.get("password")
       const rememberMe = Cookies.get('rememberMe')
       this.loginForm = {
-        username: username === undefined ? this.loginForm.username : username,
+        loginName: loginName === undefined ? this.loginForm.loginName : loginName,
         password: password === undefined ? this.loginForm.password : decrypt(password),
         rememberMe: rememberMe === undefined ? false : Boolean(rememberMe)
       }
@@ -206,11 +240,11 @@ export default {
         if (valid) {
           this.loading = true
           if (this.loginForm.rememberMe) {
-            Cookies.set("username", this.loginForm.username, { expires: 30 })
+            Cookies.set("loginName", this.loginForm.loginName, { expires: 30 })
             Cookies.set("password", encrypt(this.loginForm.password), { expires: 30 })
             Cookies.set('rememberMe', this.loginForm.rememberMe, { expires: 30 })
           } else {
-            Cookies.remove("username")
+            Cookies.remove("loginName")
             Cookies.remove("password")
             Cookies.remove('rememberMe')
           }
@@ -219,7 +253,7 @@ export default {
           }).catch(() => {
             this.loading = false
             if (this.captchaEnabled) {
-              this.getCode()
+              // this.getCode()
             }
           })
         }
