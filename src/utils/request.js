@@ -6,6 +6,8 @@ import errorCode from '@/utils/errorCode'
 import { tansParams, blobValidate } from "@/utils/ruoyi"
 import cache from '@/plugins/cache'
 import { saveAs } from 'file-saver'
+import { buildInfo, generateSignature } from "@/utils/signature";
+import { v4 as uuidv4 } from 'uuid';
 
 let downloadLoadingInstance
 // 是否显示重新登录
@@ -66,6 +68,48 @@ service.interceptors.request.use(config => {
       }
     }
   }
+  // ===================== 生成签名 START =====================
+
+  // 判断是否是需要签名的接口
+  // if (config.url.startsWith("/school/")) {
+  if (config.url) {
+
+    const appCode = "test_app"; // 与后端保持一致
+    const appSecret = "后端给的 APP_SECRET";
+    const requestUuid = uuidv4().replace(/-/g, "");
+    const requestTime = Date.now().toString();
+    const requestRegion = "cn-hangzhou";
+    const uri = config.url;
+
+    // 原始 JSON(注意：config.data 是 Object)
+    const originalJson = JSON.stringify(config.data || {});
+
+    // 构造 info
+    const info = buildInfo(originalJson);
+
+    // 替换请求体，只发 info
+    config.data = { info };
+
+    // 生成 signature（注意使用原始 Json）
+    const signature = generateSignature(
+      appCode,
+      appSecret,
+      requestUuid,
+      requestTime,
+      requestRegion,
+      originalJson,
+      uri,
+    );
+
+    // 设置请求头
+    config.headers["x-app-code"] = appCode;
+    config.headers["x-request-uuid"] = requestUuid;
+    config.headers["x-request-time"] = requestTime;
+    config.headers["x-request-signature"] = signature;
+    config.headers["x-request-region"] = requestRegion;
+  }
+  // ===================== 生成签名 END =====================
+
   return config
 }, error => {
     console.log(error)

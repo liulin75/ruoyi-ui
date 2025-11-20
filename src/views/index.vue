@@ -1,38 +1,25 @@
 <template>
   <div class="app-container home">
-    <el-table :data="userList" @selection-change="handleSelectionChange">
-              <el-table-column type="selection" width="50" align="center" />
-              <el-table-column label="用户编号" align="center" key="userId" prop="userId" v-if="columns.userId.visible" />
-              <el-table-column label="用户名称" align="center" key="userName" prop="userName" v-if="columns.userName.visible" :show-overflow-tooltip="true" />
-              <el-table-column label="用户昵称" align="center" key="nickName" prop="nickName" v-if="columns.nickName.visible" :show-overflow-tooltip="true" />
-              <el-table-column label="部门" align="center" key="deptName" prop="dept.deptName" v-if="columns.deptName.visible" :show-overflow-tooltip="true" />
-              <el-table-column label="手机号码" align="center" key="phonenumber" prop="phonenumber" v-if="columns.phonenumber.visible" width="120" />
-              <el-table-column label="状态" align="center" key="status" v-if="columns.status.visible">
-                <template slot-scope="scope">
-                  <el-switch v-model="scope.row.status" active-value="0" inactive-value="1" @change="handleStatusChange(scope.row)"></el-switch>
-                </template>
-              </el-table-column>
-              <el-table-column label="创建时间" align="center" prop="createTime" v-if="columns.createTime.visible" width="160">
-                <template slot-scope="scope">
-                  <span>{{ parseTime(scope.row.createTime) }}</span>
-                </template>
-              </el-table-column>
-              <el-table-column label="操作" align="center" width="160" class-name="small-padding fixed-width">
-                <template slot-scope="scope" v-if="scope.row.userId !== 1">
-                  <el-button size="mini" type="text" icon="el-icon-edit" @click="handleUpdate(scope.row)" v-hasPermi="['system:user:edit']">修改</el-button>
-                  <el-button size="mini" type="text" icon="el-icon-delete" @click="handleDelete(scope.row)" v-hasPermi="['system:user:remove']">删除</el-button>
-                  <el-dropdown size="mini" @command="(command) => handleCommand(command, scope.row)" v-hasPermi="['system:user:resetPwd', 'system:user:edit']">
-                    <el-button size="mini" type="text" icon="el-icon-d-arrow-right">更多</el-button>
-                    <el-dropdown-menu slot="dropdown">
-                      <el-dropdown-item command="handleResetPwd" icon="el-icon-key" v-hasPermi="['system:user:resetPwd']">重置密码</el-dropdown-item>
-                      <el-dropdown-item command="handleAuthRole" icon="el-icon-circle-check" v-hasPermi="['system:user:edit']">分配角色</el-dropdown-item>
-                    </el-dropdown-menu>
-                  </el-dropdown>
-                </template>
-              </el-table-column>
-            </el-table>
+    <el-table
+    :data="tableData"
+    style="width: 100%">
+    <el-table-column
+      prop="date"
+      label="日期"
+      width="180">
+    </el-table-column>
+    <el-table-column
+      prop="name"
+      label="姓名"
+      width="180">
+    </el-table-column>
+    <el-table-column
+      prop="address"
+      label="地址">
+    </el-table-column>
+  </el-table>
 
-            <pagination v-show="total > 0" :total="total" :page.sync="queryParams.pageNum" :limit.sync="queryParams.pageSize" @pagination="getList" />
+            <pagination v-show="tableData.length > 0" :total="tableData.length" :page.sync="queryParams.pageNum" :limit.sync="queryParams.pageSize" @pagination="getList" />
   </div>
 </template>
 
@@ -62,7 +49,23 @@ export default {
       // 总条数
       total: 0,
       // 用户表格数据
-      userList: null,
+      tableData: [{
+          date: '2016-05-02',
+          name: '王小虎',
+          address: '上海市普陀区金沙江路 1518 弄'
+        }, {
+          date: '2016-05-04',
+          name: '王小虎',
+          address: '上海市普陀区金沙江路 1517 弄'
+        }, {
+          date: '2016-05-01',
+          name: '王小虎',
+          address: '上海市普陀区金沙江路 1519 弄'
+        }, {
+          date: '2016-05-03',
+          name: '王小虎',
+          address: '上海市普陀区金沙江路 1516 弄'
+        }],
       // 弹出层标题
       title: "",
       // 所有部门树选项
@@ -158,13 +161,13 @@ export default {
     },
     /** 查询用户列表 */
     getList() {
-      this.loading = true
-      listUser(this.addDateRange(this.queryParams, this.dateRange)).then(response => {
-          this.userList = response.rows
-          this.total = response.total
-          this.loading = false
-        }
-      )
+      // this.loading = true
+      // listUser(this.addDateRange(this.queryParams, this.dateRange)).then(response => {
+      //     this.userList = response.rows
+      //     this.total = response.total
+      //     this.loading = false
+      //   }
+      // )
     },
     /** 查询部门下拉树结构 */
     getDeptTree() {

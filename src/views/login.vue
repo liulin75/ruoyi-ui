@@ -4,7 +4,7 @@
     <div class="login-left-view">
       <div class="logo">
         <img src="@/assets/logo/logo.png" alt="logo"></img>
-        <h1 class="title">考试系统</h1>
+        <h1 class="title">心理测评管理系统</h1>
       </div>
 
       <div class="left-img">
@@ -269,11 +269,15 @@ $bg-mix-light-7: rgba($primary-light-7, 0.3);
       height: 38px;
     }
   }
+  
   .input-icon {
     height: 39px;
     width: 14px;
     margin-left: 2px;
   }
+}
+::v-deep .el-input__prefix{
+  left: 20px !important;
 }
 .login-wrap {
   flex: 1;
@@ -441,6 +445,10 @@ $bg-mix-light-7: rgba($primary-light-7, 0.3);
       z-index: 100;
       display: flex;
       align-items: center;
+      img{
+        width: 40px;
+        margin-right: 10px;
+      }
     }
 
     .left-img {
