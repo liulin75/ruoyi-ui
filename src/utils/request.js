@@ -6,8 +6,9 @@ import errorCode from '@/utils/errorCode'
 import { tansParams, blobValidate } from "@/utils/ruoyi"
 import cache from '@/plugins/cache'
 import { saveAs } from 'file-saver'
-import { aesEncryptCTRJava, aesEncryptCTR } from "@/utils/signature";
+import { aesEncryptCTR, buildInfo, decryptInfo } from "@/utils/signature";
 import { v4 as uuidv4 } from 'uuid';
+import CryptoJS from "crypto-js";
 
 let downloadLoadingInstance
 // 是否显示重新登录
@@ -91,41 +92,27 @@ service.interceptors.request.use(config => {
     // 原始 JSON(注意：config.data 是 Object)
     const originalJson = JSON.stringify(config.data || {});
 
-    // 构造 info
     console.log('originalJsonoriginalJsonoriginalJsonoriginalJson',originalJson)
-    const info = aesEncryptCTRJava(originalJson);
 
-
-   
-   
-
+    const info = buildInfo(originalJson);
 
     // 替换请求体，只发 info
-    config.data = { info };
+    // config.data = { info };
+    if (config.url.indexOf("?") !== -1) {
+      config.url = `${config.url}&info=${info}`;
+    } else {
+      config.url = `${config.url}?info=${info}`;
+    }
+    config.data = {};
     // 生成 signature（注意使用原始 Json）
-    console.log('config.data',config.data)
-    console.log(appCode,  appSecret, requestUuid, requestTime, requestRegion,
-      originalJson,
-      uri,)
 
-      let aaa = appCode + appSecret + requestUuid + '1763647878907' + requestRegion + originalJson + uri;
-
-    const signature = aesEncryptCTR(
-aaa
-    );
-
-      //     appCode,
-      // appSecret,
-      // requestUuid,
-      // requestTime,
-      // requestRegion,
-      // originalJson,
-      // uri,
-      // 'SHA-256'
+    let aaa = appCode + appSecret + requestUuid + requestTime + requestRegion + originalJson + uri;
+    const signature = aesEncryptCTR( aaa );
 
     // 设置请求头
     config.headers["app_code"] = appCode;
     config.headers["request_uuid"] = requestUuid;
+    // config.headers["request_time"] = '1763692784145';
     config.headers["request_time"] = requestTime;
     config.headers["request_signature"] = signature;
     config.headers["request_region"] = requestRegion;
@@ -139,55 +126,141 @@ aaa
 })
 
 // 响应拦截器
+// service.interceptors.response.use(res => {
+  
+//     // 未设置状态码则默认成功状态
+//     const code = res.data.code || 200
+//     // 获取错误信息
+//     const msg = errorCode[code] || res.data.msg || errorCode['default']
+//     // 二进制数据则直接返回
+//     if (res.request.responseType ===  'blob' || res.request.responseType ===  'arraybuffer') {
+//       return res.data
+//     }
+//     if (code === 401) {
+//       if (!isRelogin.show) {
+//         isRelogin.show = true
+//         MessageBox.confirm('登录状态已过期，您可以继续留在该页面，或者重新登录', '系统提示', { confirmButtonText: '重新登录', cancelButtonText: '取消', type: 'warning' }).then(() => {
+//           isRelogin.show = false
+//           store.dispatch('LogOut').then(() => {
+//             location.href = '/index'
+//           })
+//       }).catch(() => {
+//         isRelogin.show = false
+//       })
+//     }
+//       return Promise.reject('无效的会话，或者会话已过期，请重新登录。')
+//     } else if (code === 500) {
+//       Message({ message: msg, type: 'error' })
+//       return Promise.reject(new Error(msg))
+//     } else if (code === 601) {
+//       Message({ message: msg, type: 'warning' })
+//       return Promise.reject('error')
+//     } else if (code !== 200) {
+//       Notification.error({ title: msg })
+//       return Promise.reject('error')
+//     } else {
+//       return res.data
+//     }
+//   },
+//   error => {
+//     console.log('err' + error)
+//     let { message } = error
+//     if (message == "Network Error") {
+//       message = "后端接口连接异常"
+//     } else if (message.includes("timeout")) {
+//       message = "系统接口请求超时"
+//     } else if (message.includes("Request failed with status code")) {
+//       message = "系统接口" + message.substr(message.length - 3) + "异常"
+//     }
+//     Message({ message: message, type: 'error', duration: 5 * 1000 })
+//     return Promise.reject(error)
+//   }
+// )
 service.interceptors.response.use(res => {
-    // 未设置状态码则默认成功状态
-    const code = res.data.code || 200
-    // 获取错误信息
-    const msg = errorCode[code] || res.data.msg || errorCode['default']
-    // 二进制数据则直接返回
-    if (res.request.responseType ===  'blob' || res.request.responseType ===  'arraybuffer') {
-      return res.data
-    }
-    if (code === 401) {
-      if (!isRelogin.show) {
-        isRelogin.show = true
-        MessageBox.confirm('登录状态已过期，您可以继续留在该页面，或者重新登录', '系统提示', { confirmButtonText: '重新登录', cancelButtonText: '取消', type: 'warning' }).then(() => {
-          isRelogin.show = false
-          store.dispatch('LogOut').then(() => {
-            location.href = '/index'
-          })
-      }).catch(() => {
-        isRelogin.show = false
-      })
-    }
-      return Promise.reject('无效的会话，或者会话已过期，请重新登录。')
-    } else if (code === 500) {
-      Message({ message: msg, type: 'error' })
-      return Promise.reject(new Error(msg))
-    } else if (code === 601) {
-      Message({ message: msg, type: 'warning' })
-      return Promise.reject('error')
-    } else if (code !== 200) {
-      Notification.error({ title: msg })
-      return Promise.reject('error')
-    } else {
-      return res.data
-    }
-  },
-  error => {
-    console.log('err' + error)
-    let { message } = error
-    if (message == "Network Error") {
-      message = "后端接口连接异常"
-    } else if (message.includes("timeout")) {
-      message = "系统接口请求超时"
-    } else if (message.includes("Request failed with status code")) {
-      message = "系统接口" + message.substr(message.length - 3) + "异常"
-    }
-    Message({ message: message, type: 'error', duration: 5 * 1000 })
-    return Promise.reject(error)
+
+  let encrypted = res.data;
+
+  // 如果不是字符串，比如文件流，则直接返回
+  if (typeof encrypted !== "string") {
+    return encrypted;
   }
-)
+
+  let jsonStr = "";
+  try {
+    // ① 先解密 info
+    jsonStr = decryptInfo(encrypted);
+    console.log('jsonStrjsonStrjsonStrjsonStr',JSON.parse(jsonStr))
+  } catch (e) {
+    console.error("解密失败：", e);
+    Message.error("服务端返回内容无法解密");
+    return Promise.reject("解密失败");
+  }
+
+  let realRes;
+  try {
+    // ② JSON.parse 得到真实的后端返回对象
+    realRes = JSON.parse(jsonStr);
+  } catch (e) {
+    console.error("解析 JSON 失败：", e);
+    return Promise.reject("JSON 解析失败");
+  }
+
+  // ③ 解密出来的真实格式和原结构一致：{ code, data, msg }
+  const code = realRes.code || 200;
+  const msg = errorCode[code] || realRes.msg || errorCode["default"];
+
+  // ④ 下面完全沿用你原来的逻辑
+  if (code === 401) {
+    if (!isRelogin.show) {
+      isRelogin.show = true;
+      MessageBox.confirm(
+        "登录状态已过期，您可以继续留在该页面，或者重新登录",
+        "系统提示",
+        {
+          confirmButtonText: "重新登录",
+          cancelButtonText: "取消",
+          type: "warning"
+        }
+      )
+        .then(() => {
+          isRelogin.show = false;
+          store.dispatch("LogOut").then(() => {
+            location.href = "/index";
+          });
+        })
+        .catch(() => {
+          isRelogin.show = false;
+        });
+    }
+    return Promise.reject("无效的会话，或者会话已过期，请重新登录。");
+  } else if (code === 500) {
+    Message({ message: msg, type: "error" });
+    return Promise.reject(new Error(msg));
+  } else if (code === 601) {
+    Message({ message: msg, type: "warning" });
+    return Promise.reject("error");
+  } else if (code !== 200) {
+    Notification.error({ title: msg });
+    return Promise.reject("error");
+  }
+
+  // ⑤ 成功返回真实 data
+  return realRes;
+}, error => {
+  console.error("err" + error);
+  let { message } = error;
+
+  if (message == "Network Error") {
+    message = "后端接口连接异常";
+  } else if (message.includes("timeout")) {
+    message = "系统接口请求超时";
+  } else if (message.includes("Request failed with status code")) {
+    message = "系统接口" + message.substr(message.length - 3) + "异常";
+  }
+  Message({ message: message, type: "error", duration: 5000 });
+  return Promise.reject(error);
+});
+
 
 // 通用下载方法
 export function download(url, params, filename, config) {

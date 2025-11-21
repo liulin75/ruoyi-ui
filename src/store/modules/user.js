@@ -52,6 +52,7 @@ const user = {
       // const uuid = userInfo.uuid
       return new Promise((resolve, reject) => {
         login(loginName, provinceCode,cityCode, countyCode).then(res => {
+          console.log(res)
           setToken(res.token)
           commit('SET_TOKEN', res.token)
           resolve()
